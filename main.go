@@ -1,13 +1,17 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/augustfrih/gator/internal/config"
+	"github.com/augustfrih/gator/internal/database"
+	_ "github.com/lib/pq"
 )
 
 type state struct {
+	db  *database.Queries
 	cfg *config.Config
 }
 
@@ -20,6 +24,10 @@ func main() {
 	var sta state
 	sta.cfg = &cfg
 
+	db, err := sql.Open("postgres", cfg.DbURL)
+	dbQueries := database.New(db)
+	sta.db = dbQueries
+
 	cmds := commands{
 		registeredCommands: make(map[string]func(*state, command) error),
 	}
@@ -27,6 +35,12 @@ func main() {
 	err = cmds.register("login", handlerLogin)
 	if err != nil {
 		fmt.Println("Couldnt register handlerLogin with error:", err)
+		os.Exit(1)
+	}
+
+	err = cmds.register("register", handlerRegister)
+	if err != nil {
+		fmt.Println("Couldnt register handlerRegister with error:", err)
 		os.Exit(1)
 	}
 
