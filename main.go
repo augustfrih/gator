@@ -32,17 +32,10 @@ func main() {
 		registeredCommands: make(map[string]func(*state, command) error),
 	}
 
-	err = cmds.register("login", handlerLogin)
-	if err != nil {
-		fmt.Println("Couldnt register handlerLogin with error:", err)
-		os.Exit(1)
-	}
-
-	err = cmds.register("register", handlerRegister)
-	if err != nil {
-		fmt.Println("Couldnt register handlerRegister with error:", err)
-		os.Exit(1)
-	}
+	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
+	cmds.register("reset", reset)
+	cmds.register("users", users)
 
 	args := os.Args
 

@@ -11,7 +11,7 @@ import (
 )
 
 func handlerLogin(s *state, cmd command) error {
-	if len(cmd.arguments) == 0 {
+	if len(cmd.arguments) != 1 {
 		return fmt.Errorf("username is required")
 	}
 
@@ -34,7 +34,7 @@ func handlerLogin(s *state, cmd command) error {
 }
 
 func handlerRegister(s *state, cmd command) error {
-	if len(cmd.arguments) == 0 {
+	if len(cmd.arguments) != 1 {
 		return fmt.Errorf("user is required")
 	}
 
@@ -55,13 +55,40 @@ func handlerRegister(s *state, cmd command) error {
 		os.Exit(1)
 	}
 
-	handlerLogin(s, command{
-		arguments: cmd.arguments,
-		name:      "login",
-	})
+	err = s.cfg.SetUser(name)
 
 	fmt.Printf("User %s was created", name)
 	fmt.Println(user)
 
+	return nil
+}
+
+func reset(s *state, cmd command) error {
+	if len(cmd.arguments) != 0 {
+		return fmt.Errorf("usage: 'go run . reset'")
+	}
+	err := s.db.Reset(context.Background())
+	if err != nil {
+		return err
+	}
+	fmt.Println("Database was reset succesfully")
+	return nil
+}
+
+func users(s *state, cmd command) error {
+	if len(cmd.arguments) != 0 {
+		return fmt.Errorf("usage: 'go run . users'")
+	}
+	users, err := s.db.GetUsers(context.Background())
+	if err != nil {
+		return err
+	}
+	for _, user := range users {
+		if user.Name == s.cfg.CurrentUserName {
+			fmt.Println(user.Name + " (current)")
+		} else {
+			fmt.Println(user.Name)
+		}
+	}
 	return nil
 }
