@@ -63,7 +63,7 @@ func handlerRegister(s *state, cmd command) error {
 	return nil
 }
 
-func reset(s *state, cmd command) error {
+func handlerReset(s *state, cmd command) error {
 	if len(cmd.arguments) != 0 {
 		return fmt.Errorf("usage: 'go run . reset'")
 	}
@@ -75,7 +75,7 @@ func reset(s *state, cmd command) error {
 	return nil
 }
 
-func users(s *state, cmd command) error {
+func handlerListUsers(s *state, cmd command) error {
 	if len(cmd.arguments) != 0 {
 		return fmt.Errorf("usage: 'go run . users'")
 	}
