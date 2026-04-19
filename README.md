@@ -7,7 +7,15 @@
 
 ## Installation
 
-go install github.com/augustfrih/gator
+to install run the command "go install github.com/augustfrih/gator" from the project directory
+
+## Set up
+
+To set up create a .config.gator file in your home directory with the contents:
+
+``` {
+  "db_url": "connection_string_goes_here",
+} ```
 
 
 
