@@ -13,9 +13,18 @@ to install run the command "go install github.com/augustfrih/gator" from the pro
 
 To set up create a .config.gator file in your home directory with the contents:
 
-``` {
+```
+{
   "db_url": "connection_string_goes_here",
-} ```
+}
+```
+
+
+## Usage
+
+To register a new user "gator register <username>"
+To login as a user "gator login <username>"
+
 
 
 
